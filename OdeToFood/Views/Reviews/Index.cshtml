@@ -16,6 +16,10 @@ We are showing the latest @Model.Count() reviews
         <h4>@item.Name</h4>
         <span>@item.Rating</span>
         <p>@item.City, @item.Country</p>
+        
+        <span class="right">
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id})
+        </span>
     </div>
 }
 
