@@ -48,7 +48,7 @@ namespace OdeToFood.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit([Bind(Exclude = "ReviewerName")]RestaurantReview review)
+        public ActionResult Edit(RestaurantReview review)
         {
             if (ModelState.IsValid)
             {
