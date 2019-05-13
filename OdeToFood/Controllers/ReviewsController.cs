@@ -1,28 +1,30 @@
-﻿using System;
+﻿using OdeToFood.Models;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using OdeToFood.Models;
 
 namespace OdeToFood.Controllers
 {
     public class ReviewsController : Controller
     {
-        private readonly OdeToFoodDb _db = new OdeToFoodDb();
 
-        // GET: Review
-        public ActionResult Index([Bind(Prefix="id")]int restaurantId)
+        OdeToFoodDb _db = new OdeToFoodDb();
+
+        public ActionResult Index([Bind(Prefix="id")] int restaurantId)
         {
             var restaurant = _db.Restaurants.Find(restaurantId);
             if (restaurant != null)
+            {
                 return View(restaurant);
+            }
             return HttpNotFound();
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int restaurantId)
         {
             return View();
         }
@@ -34,9 +36,8 @@ namespace OdeToFood.Controllers
             {
                 _db.Reviews.Add(review);
                 _db.SaveChanges();
-                return RedirectToAction("Index", new {id = review.RestaurantId});
+                return RedirectToAction("Index", new { id = review.RestaurantId });
             }
-
             return View(review);
         }
 
@@ -54,19 +55,15 @@ namespace OdeToFood.Controllers
             {
                 _db.Entry(review).State = EntityState.Modified;
                 _db.SaveChanges();
-                return RedirectToAction("Index", new {id = review.RestaurantId});
+                return RedirectToAction("Index", new { id = review.RestaurantId });
             }
-
             return View(review);
         }
-
 
         protected override void Dispose(bool disposing)
         {
             _db.Dispose();
             base.Dispose(disposing);
         }
-
-
     }
 }

@@ -7,9 +7,12 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+   @if(User.IsInRole("admin")){ 
+      @Html.ActionLink("Create New", "Create") 
+    } 
+
 </p>
-<table class="table">
+<table>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -36,7 +39,7 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Reviews", "Index", "Reviews", new { id=item.Id }, null) |
+            @Html.ActionLink("Reviews", "Index", "Reviews", new { id=item.Id },null) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>

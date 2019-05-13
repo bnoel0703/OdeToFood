@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using OdeToFood.Models;
@@ -14,25 +13,29 @@ namespace OdeToFood.Controllers
     {
         private OdeToFoodDb db = new OdeToFoodDb();
 
-        // GET: Restaurant
+        //
+        // GET: /Restaurant/
+
         public ActionResult Index()
         {
             return View(db.Restaurants.ToList());
         }
 
-
-        // GET: Restaurant/Create
+          //
+        // GET: /Restaurant/Create
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Restaurant/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        //
+        // POST: /Restaurant/Create
+
         [HttpPost]
+        [Authorize(Roles="admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,City,Country")] Restaurant restaurant)
+        public ActionResult Create(Restaurant restaurant)
         {
             if (ModelState.IsValid)
             {
@@ -44,13 +47,11 @@ namespace OdeToFood.Controllers
             return View(restaurant);
         }
 
-        // GET: Restaurant/Edit/5
-        public ActionResult Edit(int? id)
+        //
+        // GET: /Restaurant/Edit/5
+
+        public ActionResult Edit(int id = 0)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Restaurant restaurant = db.Restaurants.Find(id);
             if (restaurant == null)
             {
@@ -59,12 +60,11 @@ namespace OdeToFood.Controllers
             return View(restaurant);
         }
 
-        // POST: Restaurant/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        //
+        // POST: /Restaurant/Edit/5
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,City,Country")] Restaurant restaurant)
+        public ActionResult Edit(Restaurant restaurant)
         {
             if (ModelState.IsValid)
             {
@@ -75,13 +75,11 @@ namespace OdeToFood.Controllers
             return View(restaurant);
         }
 
-        // GET: Restaurant/Delete/5
-        public ActionResult Delete(int? id)
+        //
+        // GET: /Restaurant/Delete/5
+
+        public ActionResult Delete(int id = 0)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Restaurant restaurant = db.Restaurants.Find(id);
             if (restaurant == null)
             {
@@ -90,9 +88,10 @@ namespace OdeToFood.Controllers
             return View(restaurant);
         }
 
-        // POST: Restaurant/Delete/5
+        //
+        // POST: /Restaurant/Delete/5
+
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Restaurant restaurant = db.Restaurants.Find(id);
@@ -103,10 +102,7 @@ namespace OdeToFood.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            db.Dispose();
             base.Dispose(disposing);
         }
     }

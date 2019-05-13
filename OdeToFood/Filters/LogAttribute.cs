@@ -27,5 +27,6 @@ namespace OdeToFood.Filters
         {
             base.OnResultExecuted(filterContext);
         }
+
     }
 }
